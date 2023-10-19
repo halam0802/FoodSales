@@ -1,4 +1,4 @@
-﻿using BusinessLogicLayer.Model;
+﻿using BusinessLogicLayer.Models;
 using DataAccessLayer.Interfaces;
 using DataAccessLayer.Models;
 using System;
@@ -11,7 +11,7 @@ namespace BusinessLogicLayer.Services
 {
     public interface ICityService
     {
-        Task<List<SelectListModel>> GetCitysAsync();
+        Task<List<SelectListModel>> GetCitiesAsync();
         Task<City?> GetByIdAsync(Guid id);
         Task<bool> AddAsync(CityDto model);
         Task<bool> UpdateAsync(CityUpdate model);

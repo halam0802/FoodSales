@@ -5,15 +5,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogicLayer.Model
+namespace BusinessLogicLayer.Models
 {
-	public class RegionDto
+	public class UserDto
 	{
+		[StringLength(150, MinimumLength = 3, ErrorMessage = "The name length should be 3 - 150 characters.")]
+		public string Name { get; set; }
+
 		[StringLength(50, MinimumLength = 3, ErrorMessage = "The name length should be 3 - 50 characters.")]
-		public string? Name { get; set; }
+		public string Username { get; set; }
 	}
 
-	public class RegionUpdate: RegionDto
+	public class UserUpdate : UserDto
 	{
 		public Guid? Id { get; set; }
 	}

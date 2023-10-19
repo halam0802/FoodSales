@@ -1,4 +1,4 @@
-﻿using BusinessLogicLayer.Model;
+﻿using BusinessLogicLayer.Models;
 using BusinessLogicLayer.Services;
 using DataAccessLayer.Interfaces;
 using DataAccessLayer.Models;
@@ -14,7 +14,7 @@ namespace BusinessLogicLayer
 			this.CategoryRepository = CategoryRepository;
 		}
 
-		public async Task<List<SelectListModel>> GetCategorysAsync()
+		public async Task<List<SelectListModel>> GetCategoriesAsync()
 		{
 			var list = await CategoryRepository.GetAllAsync();
 

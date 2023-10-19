@@ -1,5 +1,5 @@
-﻿using BusinessLogicLayer.Model;
-using DataAccessLayer.Interfaces;
+﻿
+using BusinessLogicLayer.Models;
 using DataAccessLayer.Models;
 using System;
 using System.Collections.Generic;
@@ -16,5 +16,7 @@ namespace BusinessLogicLayer.Services
         Task<bool> AddAsync(UserDto model);
         Task<bool> UpdateAsync(UserUpdate model);
         Task<bool> DeleteAsync(Guid id);
-    }
+
+        Task<ApiResult<LoginResult>> Authenticate(string userName, string password);
+	}
 }

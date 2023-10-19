@@ -1,4 +1,4 @@
-﻿using BusinessLogicLayer.Model;
+﻿using BusinessLogicLayer.Models;
 using DataAccessLayer.Interfaces;
 using DataAccessLayer.Models;
 using System;
@@ -11,7 +11,7 @@ namespace BusinessLogicLayer.Services
 {
     public interface ICategoryService
     {
-        Task<List<SelectListModel>> GetCategorysAsync();
+        Task<List<SelectListModel>> GetCategoriesAsync();
         Task<Category?> GetByIdAsync(Guid id);
         Task<bool> AddAsync(RegionDto model);
         Task<bool> UpdateAsync(RegionUpdate model);

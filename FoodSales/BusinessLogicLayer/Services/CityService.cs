@@ -1,4 +1,4 @@
-﻿using BusinessLogicLayer.Model;
+﻿using BusinessLogicLayer.Models;
 using BusinessLogicLayer.Services;
 using DataAccessLayer.Interfaces;
 using DataAccessLayer.Models;
@@ -14,7 +14,7 @@ namespace BusinessLogicLayer
 			this.CityRepository = CityRepository;
 		}
 
-		public async Task<List<SelectListModel>> GetCitysAsync()
+		public async Task<List<SelectListModel>> GetCitiesAsync()
 		{
 			var list = await CityRepository.GetAllAsync();
 

@@ -16,7 +16,10 @@ namespace DataAccessLayer.Interfaces
 		{ 
 			this.dataContext = dataContext;
 		}
-
+		public async Task<User?> GetUserByUsernameAsync(string userName)
+		{
+			return await dataContext.Users.Where(n => !n.Deleted && n.Username == userName).FirstOrDefaultAsync();
+		}
 		public async Task<List<User>> GetAllAsync()
 		{
 			return await dataContext.Users.Where(n => !n.Deleted).ToListAsync();
