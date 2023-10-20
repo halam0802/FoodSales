@@ -1,4 +1,5 @@
-﻿using DataAccessLayer.Models;
+﻿using DataAccessLayer.Base;
+using DataAccessLayer.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,75 +9,15 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Interfaces
 {
-	public class UserRepository : IUserRepository
+	public interface IUserRepository : IBaseRepository<User>
 	{
-		private readonly DataContext dataContext;
 
-		public UserRepository(DataContext dataContext) 
-		{ 
-			this.dataContext = dataContext;
-		}
-		public async Task<User?> GetUserByUsernameAsync(string userName)
+	}
+
+	public class UserRepository : BaseRepository<User>, IUserRepository
+	{
+		public UserRepository(DbContextOptions<DataContext> options) : base(options)
 		{
-			return await dataContext.Users.Where(n => !n.Deleted && n.Username == userName).FirstOrDefaultAsync();
-		}
-		public async Task<List<User>> GetAllAsync()
-		{
-			return await dataContext.Users.Where(n => !n.Deleted).ToListAsync();
-		}
-
-		public async Task<bool> AddAsync(User model)
-		{
-			if (model != null)
-			{
-				dataContext.Users.Add(model);
-
-				var result = await dataContext.SaveChangesAsync();
-
-				if(result > 0)
-					return true;
-			} 
-
-			return false;
-		}
-
-		public async Task<bool> DeleteAsync(Guid id)
-		{
-			var model = dataContext.Users.FirstOrDefault(n => n.Id == id);
-
-			if (model != null && !model.Deleted)
-			{
-				model.Deleted = true;
-
-				dataContext.Users.Update(model);
-
-				var result = await dataContext.SaveChangesAsync();
-
-				if (result > 0)
-					return true;
-			}
-
-			return false;
-		}
-
-		public async Task<bool> UpdateAsync(User model)
-		{
-			if (model != null && !model.Deleted)
-			{
-				dataContext.Users.Update(model);
-
-				var result = await dataContext.SaveChangesAsync();
-
-				if (result > 0)
-					return true;
-			}
-
-			return false;
-		}
-
-		public async Task<User?> GetByIdAsync(Guid id)
-		{
-			return await Task.FromResult(dataContext.Users.FirstOrDefault(n => n.Id == id));
 		}
 	}
 }

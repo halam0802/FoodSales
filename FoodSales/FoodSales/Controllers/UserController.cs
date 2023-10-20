@@ -1,11 +1,11 @@
-﻿using BusinessLogicLayer.Models;
-using BusinessLogicLayer.Services;
+﻿using BusinessLogicLayer.Interfaces;
+using BusinessLogicLayer.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FoodSales.Controllers
 {
-	[ApiController]
+    [ApiController]
 	[Route("[controller]")]
 	public class UserController : ControllerBase
 	{
@@ -25,7 +25,6 @@ namespace FoodSales.Controllers
 		public async Task<ApiResult<LoginResult>> Login(AuthenticateDto request)
 		{
 			return await _userService.Authenticate(request.Username, request.Password);
-
 		}
 	}
 }

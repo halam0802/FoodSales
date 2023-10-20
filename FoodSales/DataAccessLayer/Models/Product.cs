@@ -11,6 +11,6 @@ namespace DataAccessLayer.Models
 	{
 		[StringLength(150)]
 		public string Name { get; set; }
-		public decimal Price { get; set; }
+		public Guid CategoryId { get; set; }
 	}
 }

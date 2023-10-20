@@ -10,7 +10,7 @@ namespace BusinessLogicLayer.Models
 	public class RegionDto
 	{
 		[StringLength(50, MinimumLength = 3, ErrorMessage = "The name length should be 3 - 50 characters.")]
-		public string? Name { get; set; }
+		public string Name { get; set; }
 	}
 
 	public class RegionUpdate: RegionDto

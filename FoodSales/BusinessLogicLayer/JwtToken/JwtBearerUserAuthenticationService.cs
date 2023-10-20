@@ -1,4 +1,4 @@
-﻿using BusinessLogicLayer.Services;
+﻿using BusinessLogicLayer.Interfaces;
 using DataAccessLayer.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System;
@@ -9,17 +9,13 @@ using System.Threading.Tasks;
 
 namespace BusinessLogicLayer.JwtToken
 {
-	public interface IJwtBearerUserAuthenticationService
-	{
-		Task<bool> Valid(TokenValidatedContext context);
-	}
 	public class JwtBearerUserAuthenticationService : IJwtBearerUserAuthenticationService
 	{
-		private readonly IUserService userService;
+		private readonly IUserService _userService;
 
-		public JwtBearerUserAuthenticationService(IUserService userService)
+		public JwtBearerUserAuthenticationService(IUserService _userService)
 		{
-			this.userService = userService;
+			this._userService = _userService;
 
 		}
 		public async Task<bool> Valid(TokenValidatedContext context)
@@ -31,7 +27,7 @@ namespace BusinessLogicLayer.JwtToken
 
 			if (!string.IsNullOrEmpty(id))
 			{
-				var user = await userService.GetByIdAsync(Guid.Parse(id));
+				var user = await _userService.GetByIdAsync(Guid.Parse(id));
 
 				if (user != null && user.Name == name && user.Username == userName)
 					return true;

@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Interfaces
 {
-	public interface ICityRepository : IBaseRepository<City>
+	public interface IFoodSaleRepository : IBaseRepository<FoodSale>
 	{
 
 	}
 
-	public class CityRepository : BaseRepository<City>, ICityRepository
+	public class FoodSaleRepository : BaseRepository<FoodSale>, IFoodSaleRepository
 	{
-		public CityRepository(DbContextOptions<DataContext> options) : base(options)
+		public FoodSaleRepository(DbContextOptions<DataContext> options) : base(options)
 		{
 		}
 	}

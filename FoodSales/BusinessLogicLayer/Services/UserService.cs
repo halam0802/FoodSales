@@ -1,19 +1,19 @@
 ﻿using BusinessLogicLayer.Helpers;
+using BusinessLogicLayer.Interfaces;
 using BusinessLogicLayer.JwtToken;
 using BusinessLogicLayer.Models;
-using BusinessLogicLayer.Services;
 using DataAccessLayer.Interfaces;
 using DataAccessLayer.Models;
 
 namespace BusinessLogicLayer
 {
-	public class UserService: IUserService
+    public class UserService: IUserService
 	{
-		private readonly IUserRepository UserRepository;
+		private readonly IUserRepository _userRepository;
 		private readonly IJwtService jwtService;
-		public UserService(IUserRepository UserRepository, IJwtService jwtService) 
+		public UserService(IUserRepository _userRepository, IJwtService jwtService) 
 		{ 
-			this.UserRepository = UserRepository;
+			this._userRepository = _userRepository;
 			this.jwtService = jwtService;
 		}
 
@@ -21,11 +21,12 @@ namespace BusinessLogicLayer
 		{
 			try
 			{
-				var user = await UserRepository.GetUserByUsernameAsync(userName);
+				var user = _userRepository.Table.FirstOrDefault(n => !n.Deleted && n.Username == userName);
 
 				if (user != null && user.Password == GetPasswordHash(password, user.PasswordSalt))
 				{
 					var token = jwtService.GenerateToken(user);
+
 					var result = new LoginResult
 					{
 						Id = user.Id,
@@ -34,65 +35,20 @@ namespace BusinessLogicLayer
 						Token = token,
 					};
 
-					return ApiResult<LoginResult>.Successfully(result);
+					return await Task.FromResult(ApiResult<LoginResult>.Successfully(result));
 				}
+
+				return await Task.FromResult(ApiResult<LoginResult>.Failure());
 			}
 			catch (Exception ex)
 			{
-				return ApiResult<LoginResult>.Failure("LOGIN: " + ex.Message);
+				return await Task.FromResult(ApiResult<LoginResult>.Failure("LOGIN: " + ex.Message));
 			}
-
-			return ApiResult<LoginResult>.Failure();
-		}
-
-		public async Task<List<SelectListModel>> GetUsersAsync()
-		{
-			var list = await UserRepository.GetAllAsync();
-
-			return list.Select(n => new SelectListModel
-			{
-				ItemText = n.Name,
-				ItemValue = n.Id.ToString()
-			}).ToList();
 		}
 
 		public async Task<User?> GetByIdAsync(Guid id)
 		{
-			return await UserRepository.GetByIdAsync(id);
-		}
-
-		public async Task<bool> AddAsync(UserDto model)
-		{
-			var newObj = new User
-			{
-				Id = Guid.NewGuid(),
-				Name = model.Name,
-			};
-			
-			return await UserRepository.AddAsync(newObj);
-		}
-	
-		public async Task<bool> UpdateAsync(UserUpdate model)
-		{
-			if (model.Id != null)
-			{
-				var obj = await GetByIdAsync(model.Id.Value);
-
-				if (obj != null)
-				{
-					obj.Name = model.Name ?? string.Empty;
-					obj.UpdatedAt = DateTime.UtcNow;
-
-					return await UserRepository.UpdateAsync(obj);
-				}
-			}
-			
-			return false;
-		}
-
-		public async Task<bool> DeleteAsync(Guid id)
-		{
-			return await UserRepository.DeleteAsync(id);
+			return await _userRepository.GetByIdAsync(id);
 		}
 
 		public string GetPasswordHash(string password, string passwordSalt)

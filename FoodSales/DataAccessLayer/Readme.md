@@ -4,7 +4,7 @@ Install dotnet ef before using command: dotnet tool install --global dotnet-ef
 
 1. Open CMD on root folder of the project.
 2. Run the command:
-	dotnet ef migrations add initialize-database -c DataContext -o Migrations  --startup-project DataAccessLayer.csproj
+	dotnet ef migrations add update-database -c DataContext -o Migrations  --startup-project DataAccessLayer.csproj
 
 	dotnet ef database update  --startup-project DataAccessLayer.csproj --context DataContext
 

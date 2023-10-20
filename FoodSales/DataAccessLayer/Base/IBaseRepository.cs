@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataAccessLayer.Models.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,13 +9,13 @@ namespace DataAccessLayer.Base
 {
     public interface IBaseRepository<T>
     {
-        Task<List<T>> GetAllAsync();
+        IEnumerable<T> Table { get; }
 
-        Task<bool> AddAsync(T model);
+		Task<MessageReport> AddAsync(T model);
 
-        Task<bool> UpdateAsync(T model);
+        Task<MessageReport> UpdateAsync(T model);
 
-        Task<bool> DeleteAsync(Guid id);
+        Task<MessageReport> DeleteAsync(T model);
 
 		Task<T?> GetByIdAsync(Guid id);
 	}
